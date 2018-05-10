@@ -47,6 +47,7 @@ options$nmc <- 100
 Intialize the priors.
 
 ```{r}
+PriorPar <- list()
 PriorPar$a <- 1
 PriorPar$b <- 5
 PriorPar$a0 <- 1
