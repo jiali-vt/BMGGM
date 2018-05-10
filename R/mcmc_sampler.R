@@ -6,9 +6,11 @@
 #'  K: number of pathways.
 #'  z_P: indicator vector of genes membership
 #'  P: dimension of the data.
+#'  
 #' @param options a list of objets:
 #'  burnin: number of MCMC iterations before burnin.
 #'  nmc: number of MCMC iterations after burnin.
+#'  
 #' @param PriorPar a list of objets:
 #'  a: shape1 parameter for Theta for off-digonal block.
 #'  b: shape2 parameter for Theta for off-digonal block.
@@ -18,15 +20,18 @@
 #'  delta: shape parameter for v0^2.
 #'  c: the parameter for decision boundary of spike-and-slab.
 #'  Theta: a K x K initial graph PPI matrix.
+#'  
 #' @param InitVal a list of objets:
 #'  mu: intercept term.
 #'  sigma2: overall noise level, same across groups.
 #'  Beta: a P x P initial coefficient matrix. 
 #'  adj: a P x P initial adjacency matrix. 
+#'  
 #' @return a list of objets:     
-#'  Beta_save: p x p x K x nmc sample of coefficient matrix
-#'  adj_save: p x p x K x nmc sample of adjacency matrix
-#'  Theta_save: K x K x nmc sample of graph similarity matrix
+#'  Beta_save: p x p x K x nmc sample of coefficient matrix.
+#'  adj_save: p x p x K x nmc sample of adjacency matrix.
+#'  Theta_save: K x K x nmc sample of graph similarity matrix.
+#'  
 #' @export
 Bmggm <- function(dat, options, PriorPar, InitVal) {
   # load data
@@ -35,9 +40,11 @@ Bmggm <- function(dat, options, PriorPar, InitVal) {
   n <- dim(data)[1]
   P <- dim(data)[2]
   p <- P/K
+  
   # load options
   burnin <- options$burnin
   nmc <- options$nmc
+  
   # load priors
   a <- PriorPar$a
   b <- PriorPar$b
@@ -47,11 +54,13 @@ Bmggm <- function(dat, options, PriorPar, InitVal) {
   delta <- PriorPar$delta
   c <- PriorPar$c
   Theta <- PriorPar$Theta
+  
   # load initials
   sigma2 <- InitVal$sigma2
   mu <- InitVal$mu
   Beta <- InitVal$Beta
   adj <- InitVal$adj
+  
   # set up matrices for return values
   Beta_save <- array(NA, c(P, P, nmc))
   adj_save <- Beta_save
@@ -92,8 +101,10 @@ Bmggm <- function(dat, options, PriorPar, InitVal) {
       adj[i, col_start_index:col_end_index] <- ifelse(log_odds_adj > 100, 1, rbinom(ncol(X), size = 1, prob = exp(log_odds_adj)/(exp(log_odds_adj) + 1)))
       adj[col_start_index:col_end_index, i] <- adj[i, col_start_index:col_end_index]
     }  
+    
     # compute means
     mu[P] <- mean(data[, P])
+    
     # update Theta 
     for (m in 1:K) {
       for (k in m:K) {
@@ -112,6 +123,7 @@ Bmggm <- function(dat, options, PriorPar, InitVal) {
         Theta[k, m] <- Theta[m, k]
       } 
     }  
+    
     # Retain values for posterior sample 
     if (iter > burnin) {
       Beta_save[, , iter - burnin] <- Beta[, ]

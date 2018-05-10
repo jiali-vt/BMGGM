@@ -12,10 +12,12 @@
 #'  
 #' @export
 GenerateData <- function(p, K, n, network_type = "ar2") {
+  # initialize
   z_P <- c()
   Omegas <- list()
   A <- matrix(0, p * K, p * K)
   
+  # set network for each block
   for (k in 1:K) {
     z_P <- c(z_P, rep(k, p))
     if (network_type == "ar2") 
@@ -49,11 +51,13 @@ GenerateData <- function(p, K, n, network_type = "ar2") {
     A[which(z_P == k), which(z_P == k)] <- Omega
     Omegas[[k]] <- Omega
   }
+  
   # make sure precision matrix must be positive definite
   if (network_type == "scale-free") 
     A <- FixMatrix(A, 1.5)
   if (any(eigen(A)$values < 0)) 
     stop("Precision matrix must be positive definite")
+  
   # generdate data based on precision matrix
   Cov_True <- solve(A)
   data <- mvrnorm(n, rep(0, p * K), Cov_True)
