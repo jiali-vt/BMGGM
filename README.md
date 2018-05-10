@@ -12,7 +12,7 @@ library(BMGGM)
 
 #### Getting Started
 
-[Examples]()
+[Examples](https://github.com/jiali-vt/BMGGM/blob/master/vignettes/examples.Rmd)
 
 #### Manuscript
 
