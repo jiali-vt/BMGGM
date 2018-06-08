@@ -7,7 +7,6 @@ An R package for learning multiple Gaussian graphical models by Bayesian
 install.packages("devtools")
 library(devtools)
 devtools::install_github("jiali-vt/BMGGM")
-library(BMGGM)
 ```
 
 #### Getting Started
