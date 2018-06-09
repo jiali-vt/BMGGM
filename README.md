@@ -15,4 +15,4 @@ devtools::install_github("jiali-vt/BMGGM")
 
 #### Manuscript
 
-[Bayesian Multiple Gaussian Graphical Models for Multilevel Variables from Unknown Classes](https://github.com/jiali-vt/BMGGM)
+[Bayesian Multiple Gaussian Graphical Models for Unknown Classes](https://github.com/jiali-vt/BMGGM)
